@@ -1,0 +1,9 @@
+server:
+  servlet:
+    context-path: /v1 # 配置后访问路径后+/v1
+spring:
+  datasource:
+    # driver-class-name: com.mysql.jdbc.Driver 不需加这段
+    url: jdbc:mysql://localhost:3306/api-runner?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: root
