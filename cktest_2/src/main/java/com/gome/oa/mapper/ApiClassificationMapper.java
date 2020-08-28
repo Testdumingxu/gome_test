@@ -1,7 +1,9 @@
 package com.gome.oa.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gome.oa.common.ApiClassificationNameVo;
 import com.gome.oa.common.ApiClassificationVO;
+import com.gome.oa.common.ClassificationVO;
 import com.gome.oa.pojo.ApiClassification;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gome.oa.pojo.Project;
@@ -37,4 +39,14 @@ public interface ApiClassificationMapper extends BaseMapper<ApiClassification> {
             "FROM project p join api_classification cf " +
             "on cf.project_id = p.id AND p.create_user = #{userId}")
     public List<ApiClassificationNameVo> findProClassificationAll(Integer userId);
+
+    /**
+     *
+     * 获取当前用户下的分类信息（）
+     */
+    @Select("SELECT t1.*,t2.`name` as ProjectName " +
+            "FROM api_classification t1 JOIN project t2 " +
+            "ON t1.project_id = t2.id " +
+            "WHERE t1.create_user = #{userId}")
+    public List<ClassificationVO> findAll(Integer userId, Page<ClassificationVO> page);
 }

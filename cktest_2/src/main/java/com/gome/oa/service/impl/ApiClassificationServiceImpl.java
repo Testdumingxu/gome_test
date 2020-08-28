@@ -1,7 +1,9 @@
 package com.gome.oa.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gome.oa.common.ApiClassificationNameVo;
 import com.gome.oa.common.ApiClassificationVO;
+import com.gome.oa.common.ClassificationVO;
 import com.gome.oa.pojo.ApiClassification;
 import com.gome.oa.mapper.ApiClassificationMapper;
 import com.gome.oa.service.ApiClassificationService;
@@ -34,5 +36,10 @@ public class ApiClassificationServiceImpl extends ServiceImpl<ApiClassificationM
     @Override
     public List<ApiClassificationNameVo> findProClassificationAll(Integer userId) {
         return apiClassificationMapper.findProClassificationAll(userId);
+    }
+
+    @Override
+    public List<ClassificationVO> findAll(Integer userId, Page<ClassificationVO> page) {
+        return apiClassificationMapper.findAll(userId, page);
     }
 }

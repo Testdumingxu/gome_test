@@ -1,17 +1,21 @@
 package com.gome.oa.controller;
 
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gome.oa.common.ApiClassificationNameVo;
 import com.gome.oa.common.ApiClassificationVO;
+import com.gome.oa.common.ClassificationVO;
 import com.gome.oa.common.Result;
+import com.gome.oa.pojo.ApiClassification;
+import com.gome.oa.pojo.Project;
+import com.gome.oa.pojo.User;
 import com.gome.oa.service.ApiClassificationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +34,23 @@ public class ApiClassificationController {
 
     @Autowired
     ApiClassificationService apiClassificationService;
+
+    @GetMapping("/get")
+    public Result findAll(Integer userId, Integer pageNo, Integer page_size) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        Page<ClassificationVO> page = new Page<>(pageNo == null ? 1 : pageNo,page_size == null ? 5 : page_size);
+        IPage<ClassificationVO> List = page.setRecords(apiClassificationService.findAll(user.getId().intValue(),page));
+        return new Result("1", List, "查询接口分类成功");
+    }
+
+    @PostMapping("/add")
+    public Result ClassificationAdd(@RequestBody ApiClassification apiClassification) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        apiClassification.setCreateUser(user.getId());
+
+        apiClassificationService.save(apiClassification);
+        return new Result("1", "新增分类成功");
+    }
 
     @GetMapping("/toIndex")
     @ApiOperation(value = "获取所有分类信息", httpMethod = "GET")
