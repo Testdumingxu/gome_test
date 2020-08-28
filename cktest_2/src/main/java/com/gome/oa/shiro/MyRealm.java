@@ -22,7 +22,7 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         // 认证逻辑
         String username = authenticationToken.getPrincipal().toString();
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
         queryWrapper.eq("username", username);
         User dbUser = userService.getOne(queryWrapper);
         if (dbUser != null) {
